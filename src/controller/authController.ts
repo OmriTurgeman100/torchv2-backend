@@ -12,18 +12,26 @@ interface auth_request extends Request {
   user?: any;
 }
 
-export const register_users = CatchAsync( // todo NUMBER 1 
+export const register_users = CatchAsync(
+  // todo NUMBER 1
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const name = req.body.username;
 
     const hashed_password = await bcrypt.hash(req.body.password, 10);
 
     const inserted_user = await pool.query(
-      "insert into users (username, password) values ($1, $2) returning username;",
+      "insert into users (username, password) values ($1, $2) returning username,id;",
       [name, hashed_password]
     );
 
     const created_username: string = inserted_user.rows[0].username;
+
+    const created_user_id: number = inserted_user.rows[0].id;
+
+    const insert_default_image = await pool.query(
+      "insert into user_images (user_id) values ($1)",
+      [created_user_id]
+    );
 
     res.status(201).json({
       status: "success",

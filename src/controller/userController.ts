@@ -81,8 +81,14 @@ export const user_details = CatchAsync(
       [user_id]
     );
 
+    const acount_created_at = await pool.query(
+      "select uploaded_at from user_images where user_id = $1 order by uploaded_at asc;",
+      [user_id]
+    );
+
     res.status(200).json({
-      user: user_data.rows,
+      user: user_data.rows, 
+      user_created_at: acount_created_at.rows,
     });
   }
 );
@@ -176,5 +182,3 @@ export const profile_photo = CatchAsync(
 //     cb(null, `user-${req.user.user_id}-${Date.now()}.${fileExtension}`);
 //   },
 // });
-
-

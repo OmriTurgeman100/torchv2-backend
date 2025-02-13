@@ -77,7 +77,7 @@ export const user_details = CatchAsync(
     const user_id: number = req.user.user_id;
 
     const user_data = await pool.query(
-      "select username, role from users where id = $1",
+      "select id, username, role from users where id = $1",
       [user_id]
     );
 
@@ -176,3 +176,5 @@ export const profile_photo = CatchAsync(
 //     cb(null, `user-${req.user.user_id}-${Date.now()}.${fileExtension}`);
 //   },
 // });
+
+

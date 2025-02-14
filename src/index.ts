@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/authRouter";
 import userRouter from "./routes/userRouter";
+import reports_nodes_Router from "./routes/reports_nodes_router";
 import { Request, Response, NextFunction } from "express";
 import AppError from "./utils/AppError";
 import path from "path";
@@ -21,6 +22,7 @@ app.use(cookieParser());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/reports/nodes", reports_nodes_Router);
 
 app.listen(port, () => {
   console.log(

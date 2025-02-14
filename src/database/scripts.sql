@@ -11,3 +11,32 @@ create table user_images (
     image_url text not null default 'default_profile.png',
     uploaded_at timestamp default now()
 );
+
+create table nodes (
+	node_id SERIAL PRIMARY KEY,
+	parent INTEGER REFERENCES nodes(node_id) ON DELETE CASCADE,
+	title VARCHAR(50) NOT NULL,
+	description VARCHAR(50) NOT NULL,
+	status VARCHAR(50) DEFAULT 'expired',
+    excluded VARCHAR(50) DEFAULT 'false',
+	time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+create table reports (
+	id SERIAL PRIMARY KEY,
+	report_id VARCHAR(50) NOT NULL,
+	parent INTEGER REFERENCES nodes(node_id) ON DELETE CASCADE,
+	title VARCHAR(50) NOT NULL,
+	description VARCHAR(50) NOT NULL,
+	value INTEGER,
+	excluded VARCHAR(50) DEFAULT 'false',
+	time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE rules (  
+    rule_id SERIAL PRIMARY KEY,
+    parent_node_id INTEGER REFERENCES nodes(node_id) ON DELETE CASCADE,
+    conditions JSONB NOT NULL,  
+    action VARCHAR(50) NOT NULL,
+    time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

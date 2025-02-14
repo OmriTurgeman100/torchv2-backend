@@ -4,7 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/authRouter";
 import userRouter from "./routes/userRouter";
-import reports_nodes_Router from "./routes/reports_nodes_router";
+import reports_nodes_Router from "./routes/reports_nodes_Router";
 import { Request, Response, NextFunction } from "express";
 import AppError from "./utils/AppError";
 import path from "path";

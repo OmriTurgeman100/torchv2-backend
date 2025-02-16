@@ -112,7 +112,6 @@ export const BlackBox_Scripts = CatchAsync(
     );
 
     if (existing_report.rows.length > 0) {
-      console.log("found report");
       if (existing_report.rows[0].parent != null) {
         parent = existing_report.rows[0].parent;
       }

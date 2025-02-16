@@ -76,8 +76,6 @@ export const user_details = CatchAsync(
   ): Promise<void> => {
     const user_id: number = req.user.user_id;
 
-    console.log(req.user)
-
     const user_data = await pool.query(
       "select id, username, role from users where id = $1",
       [user_id]
@@ -89,7 +87,7 @@ export const user_details = CatchAsync(
     );
 
     res.status(200).json({
-      user: user_data.rows, 
+      user: user_data.rows,
       user_created_at: acount_created_at.rows,
     });
   }

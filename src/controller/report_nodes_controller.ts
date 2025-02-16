@@ -64,3 +64,67 @@ export const navigate_tree_data = CatchAsync(
     });
   }
 );
+
+export const BlackBox_Scripts = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const report_id: string = req.body.report_id;
+
+    let parent: number | null = req.body.parent;
+
+    const title: string = req.body.title;
+
+    const description: string = req.body.description;
+
+    const value: number = req.body.value;
+
+    const nodes_under_parent = await pool.query(
+      "select * from nodes where parent = $1",
+      [parent]
+    );
+
+    if (nodes_under_parent.rows.length > 0) {
+      return next(
+        new AppError(
+          "Reports and nodes cannot be placed under the same parent.",
+          400
+        )
+      );
+    }
+
+    const check_another_report_same_parent = await pool.query(
+      "select distinct(report_id), parent from reports where parent = $1;",
+      [parent]
+    );
+
+    if (check_another_report_same_parent.rows.length > 0) {
+      for (const report of check_another_report_same_parent.rows) {
+        if (report.report_id != report_id) {
+          return next(
+            new AppError("Report with the same parent already exists", 400)
+          );
+        }
+      }
+    }
+
+    const existing_report = await pool.query(
+      "select * from reports where report_id = $1 order by time desc limit 1;",
+      [report_id]
+    );
+
+    if (existing_report.rows.length > 0) {
+      console.log("found report");
+      if (existing_report.rows[0].parent != null) {
+        parent = existing_report.rows[0].parent;
+      }
+    }
+
+    const inserted_report = await pool.query(
+      "insert into reports (report_id, parent, title, description, value) values ($1, $2, $3, $4, $5);",
+      [report_id, parent, title, description, value]
+    );
+
+    res.status(201).json({
+      message: "Report inserted successfully.",
+    });
+  }
+);

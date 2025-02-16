@@ -11,7 +11,7 @@ router
 
 router
   .route("/BlackBox")
-  .post(report_nodes_controller.post_nodes);
+  .post(report_nodes_controller.BlackBox_Scripts);
 
 router
   .route("/:id")

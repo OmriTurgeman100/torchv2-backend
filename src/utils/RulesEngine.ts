@@ -18,24 +18,11 @@ class RulesEngine {
 
       let rules_data = rule.rows[0].conditions[0];
 
-      // console.log(rules_data)
-
-      // console.log(`parent is ${this.parent}`)
-
       if (rules_data.report_id) {
-        // console.log('eval report rules')
-
         await this.Evaluate_Report_Rules();
       } else if (rules_data.node_id) {
-        // console.log('eval node rules')
         await this.Evaluate_Node_Rules();
       }
-    }
-
-    if (this.parent == null) {
-      console.log(
-        `loop ended, parent is ${this.parent}, ${typeof this.parent}`
-      );
     }
   }
 
@@ -63,27 +50,22 @@ class RulesEngine {
           case ">":
             if (report_value > condition.threshold) {
               case_matched = true;
-              // console.log(1);
             }
             break;
           case "<":
             if (report_value < condition.threshold) {
               case_matched = true;
-              // console.log(2);
             }
             break;
           case "==":
             if (report_value == condition.threshold) {
               case_matched = true;
-              // console.log(3);
             }
             break;
           default:
             null;
         }
       }
-
-      // console.log(case_matched, action);
 
       if (case_matched === true) {
         await this.Apply_Rules(action);
@@ -118,10 +100,6 @@ class RulesEngine {
           const condition_node_id = condition.node_id;
           const condition_node_value = condition.value;
 
-          console.log(condition);
-
-          console.log(condition_node_value);
-
           for (const node of nodes.rows) {
             if (node.node_id === condition_node_id) {
               if (node.status !== condition_node_value) {
@@ -132,14 +110,10 @@ class RulesEngine {
           }
 
           if (case_matched) {
-            console.log(
-              `case matched! case is ${case_matched}, action ${action}`
-            );
             this.Apply_Rules(action);
           }
         }
       } else if (operator === "or") {
-        console.log("or");
         let case_matched: boolean = false;
 
         for (const condition of node_rule.conditions) {
@@ -149,7 +123,6 @@ class RulesEngine {
           for (const node of nodes.rows) {
             if (node.node_id === condition_node_id) {
               if (node.status === condition_node_value) {
-                console.log("found match in or operator");
                 case_matched = true;
               }
             }
@@ -157,7 +130,6 @@ class RulesEngine {
         }
 
         if (case_matched) {
-          console.log(`case_matched_or_is ${case_matched}, action ${action}`);
           this.Apply_Rules(action);
         }
       }

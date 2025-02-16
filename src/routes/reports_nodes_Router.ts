@@ -10,6 +10,10 @@ router
 
 
 router
+  .route("/BlackBox")
+  .post(report_nodes_controller.post_nodes);
+
+router
   .route("/:id")
   .get(report_nodes_controller.navigate_tree_data);
 

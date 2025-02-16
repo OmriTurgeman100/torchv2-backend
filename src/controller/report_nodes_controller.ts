@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import pool from "../database/database";
 import AppError from "../utils/AppError";
 import { CatchAsync } from "../utils/CatchAsync";
+import RulesEngine from "../utils/RulesEngine";
 
 export const post_nodes = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -69,7 +70,7 @@ export const BlackBox_Scripts = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const report_id: string = req.body.report_id;
 
-    let parent: number | null = req.body.parent;
+    let parent: number = req.body.parent;
 
     const title: string = req.body.title;
 
@@ -122,6 +123,10 @@ export const BlackBox_Scripts = CatchAsync(
       [report_id, parent, title, description, value]
     );
 
+    const rule = new RulesEngine(parent);
+
+    rule.StartRulesEngine();
+
     res.status(201).json({
       message: "Report inserted successfully.",
     });
@@ -157,7 +162,6 @@ export const post_rules = CatchAsync(
       );
     }
 
-    
     const rules = await pool.query(
       "insert into rules (parent_node_id, conditions, action, operator) values ($1, $2, $3, $4);",
       [parent_id, JSON.stringify(conditions), action, operator] // * must jsonify the data, postgres accept values as bson

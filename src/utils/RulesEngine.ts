@@ -104,11 +104,12 @@ class RulesEngine {
       [this.parent]
     );
 
+    console.log(`node rule rows`)
     console.log(node_rule.rows)
 
     const nodes = await pool.query("select * from nodes where parent = $1", [this.parent])
 
-    console.log(`nodes are `)
+    // console.log(`nodes are `)
 
     console.log(nodes.rows)
 

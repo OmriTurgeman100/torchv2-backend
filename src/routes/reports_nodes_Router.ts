@@ -1,5 +1,6 @@
 import express from "express";
 import * as report_nodes_controller from "../controller/report_nodes_controller";
+import * as authController from "../controller/authController";
 
 const router = express.Router();
 
@@ -15,7 +16,8 @@ router
 
 router
   .route("/:id")
-  .get(report_nodes_controller.navigate_tree_data);
+  .get(report_nodes_controller.navigate_tree_data)
+  .delete(report_nodes_controller.delete_node);
 
 router
   .route("/Rules/:id")

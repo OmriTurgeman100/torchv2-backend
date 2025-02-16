@@ -46,6 +46,35 @@ export const get_root_nodes = CatchAsync(
   }
 );
 
+export const delete_node = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const node_id = req.params.id;
+
+    const has_rules = await pool.query(
+      "select * from rules where parent_node_id = $1",
+      [node_id]
+    );
+
+    if (has_rules.rows.length > 0) {
+      return next(
+        new AppError(
+          "Cannot delete this node. Please remove its associated rules first.",
+          400
+        )
+      );
+    }
+
+    const delete_query = await pool.query(
+      "delete from nodes where node_id = $1",
+      [node_id]
+    );
+
+    res.status(200).json({
+      data: "test",
+    });
+  }
+);
+
 export const navigate_tree_data = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const parent = req.params.id;

@@ -8,20 +8,15 @@ db_config = {
     "port": "5432"  
 }
 
-def set_nodes_to_be_expired():
+def insert_root_nodes(amount):
     try:
         postgres = psycopg2.connect(**db_config)
         cur = postgres.cursor()
 
-        cur.execute("select * from nodes")
-
-        nodes = cur.fetchall()
-
-
-        for node in nodes:
-            node_id = node[0]
-
-            cur.execute("UPDATE nodes SET status = 'expired' WHERE node_id = %s", (node_id,))
+        for number in range(0,amount):
+            name = f"node {number}"
+            desc = f"desc {number}"
+            cur.execute("insert into nodes (title, description) values (%s, %s)", (name, desc))
 
         postgres.commit()
         
@@ -30,4 +25,4 @@ def set_nodes_to_be_expired():
         print(e)
     
 
-set_nodes_to_be_expired()
+insert_root_nodes(30)

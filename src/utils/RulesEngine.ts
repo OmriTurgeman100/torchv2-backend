@@ -63,19 +63,19 @@ class RulesEngine {
           case ">":
             if (report_value > condition.threshold) {
               case_matched = true;
-              console.log(1);
+              // console.log(1);
             }
             break;
           case "<":
             if (report_value < condition.threshold) {
               case_matched = true;
-              console.log(2);
+              // console.log(2);
             }
             break;
           case "==":
             if (report_value == condition.threshold) {
               case_matched = true;
-              console.log(3);
+              // console.log(3);
             }
             break;
           default:
@@ -83,7 +83,7 @@ class RulesEngine {
         }
       }
 
-      console.log(case_matched, action);
+      // console.log(case_matched, action);
 
       if (case_matched === true) {
         await this.Apply_Rules(action);
@@ -104,7 +104,13 @@ class RulesEngine {
       [this.parent]
     );
 
-    console.log(node_rule)
+    console.log(node_rule.rows)
+
+    const nodes = await pool.query("select * from nodes where parent = $1", [this.parent])
+
+    console.log(`nodes are `)
+
+    console.log(nodes.rows)
 
     const recursion = await pool.query(
       "select * from nodes where node_id = $1;",

@@ -54,38 +54,39 @@ class RulesEngine {
 
     for (const rule of report_rule.rows) {
       const operator = rule.operator;
-
       const action = rule.action;
+
+      let case_matched: boolean = false;
 
       for (const condition of rule.conditions) {
         switch (operator) {
           case ">":
             if (report_value > condition.threshold) {
-              console.log(
-                `matched found ${report_value}, t ${condition.threshold}`
-              );
+              case_matched = true;
               console.log(1);
             }
             break;
           case "<":
             if (report_value < condition.threshold) {
-              console.log(
-                `matched found ${report_value}, t ${condition.threshold}`
-              );
+              case_matched = true;
               console.log(2);
             }
             break;
           case "==":
             if (report_value == condition.threshold) {
-              console.log(
-                `matched found ${report_value}, t ${condition.threshold}`
-              );
+              case_matched = true;
               console.log(3);
             }
             break;
           default:
             null;
         }
+      }
+
+      console.log(case_matched, action);
+
+      if (case_matched === true) {
+        await this.Apply_Rules(action);
       }
     }
 
@@ -103,12 +104,21 @@ class RulesEngine {
       [this.parent]
     );
 
+    console.log(node_rule)
+
     const recursion = await pool.query(
       "select * from nodes where node_id = $1;",
       [this.parent]
     );
 
     this.parent = recursion.rows[0].parent;
+  }
+
+  async Apply_Rules(action: boolean): Promise<void> {
+    const rule_statement = await pool.query(
+      "update nodes set status = $1 where node_id = $2",
+      [action, this.parent]
+    );
   }
 }
 

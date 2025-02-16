@@ -53,8 +53,8 @@ class RulesEngine {
     );
 
     for (const rule of report_rule.rows) {
-      const operator = rule.operator;
-      const action = rule.action;
+      const operator: string = rule.operator;
+      const action: string = rule.action;
 
       let case_matched: boolean = false;
 
@@ -104,27 +104,64 @@ class RulesEngine {
       [this.parent]
     );
 
-    // console.log(`node rule rows`)
-    // console.log(node_rules.rows)
+    const nodes = await pool.query("select * from nodes where parent = $1", [
+      this.parent,
+    ]);
 
     for (const node_rule of node_rules.rows) {
+      const operator: string = node_rule.operator;
+      const action: string = node_rule.action;
 
-      console.log(node_rule)
+      if (operator === "and") {
+        let case_matched: boolean = true;
+        for (const condition of node_rule.conditions) {
+          const condition_node_id = condition.node_id;
+          const condition_node_value = condition.value;
 
-      
+          console.log(condition);
 
+          console.log(condition_node_value);
+
+          for (const node of nodes.rows) {
+            if (node.node_id === condition_node_id) {
+              if (node.status !== condition_node_value) {
+                case_matched = false;
+                break;
+              }
+            }
+          }
+
+          if (case_matched) {
+            console.log(
+              `case matched! case is ${case_matched}, action ${action}`
+            );
+            this.Apply_Rules(action);
+          }
+        }
+      } else if (operator === "or") {
+        console.log("or");
+        let case_matched: boolean = false;
+
+        for (const condition of node_rule.conditions) {
+          const condition_node_id = condition.node_id;
+          const condition_node_value = condition.value;
+
+          for (const node of nodes.rows) {
+            if (node.node_id === condition_node_id) {
+              if (node.status === condition_node_value) {
+                console.log("found match in or operator");
+                case_matched = true;
+              }
+            }
+          }
+        }
+
+        if (case_matched) {
+          console.log(`case_matched_or_is ${case_matched}, action ${action}`);
+          this.Apply_Rules(action);
+        }
+      }
     }
-
-
-
-
-    const nodes = await pool.query("select * from nodes where parent = $1", [this.parent])
-
-    // console.log(`nodes are `)
-
-    // console.log(nodes.rows)
-
-    // for (node )
 
     const recursion = await pool.query(
       "select * from nodes where node_id = $1;",
@@ -134,7 +171,7 @@ class RulesEngine {
     this.parent = recursion.rows[0].parent;
   }
 
-  async Apply_Rules(action: boolean): Promise<void> {
+  async Apply_Rules(action: string): Promise<void> {
     const rule_statement = await pool.query(
       "update nodes set status = $1 where node_id = $2",
       [action, this.parent]

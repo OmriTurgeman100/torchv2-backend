@@ -40,4 +40,4 @@ CREATE TABLE rules (
     conditions JSONB NOT NULL,  
     action VARCHAR(50) NOT NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+); 

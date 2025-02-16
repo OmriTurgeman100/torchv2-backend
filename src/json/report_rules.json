@@ -1,0 +1,10 @@
+{
+  "operator": ">",
+  "conditions": [
+    {
+      "report_id": 14,
+      "threshold": "50"
+    }
+  ],
+  "action": "up"
+}

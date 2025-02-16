@@ -1,0 +1,14 @@
+{
+  "operator": "and",
+  "conditions": [
+    {
+      "node_id": 14,
+      "value": "up"
+    },
+    {
+      "node_id": 15,
+      "value": "up"
+    }
+  ],
+  "action": "up"
+}

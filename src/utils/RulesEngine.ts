@@ -99,19 +99,32 @@ class RulesEngine {
   }
 
   async Evaluate_Node_Rules(): Promise<void> {
-    const node_rule = await pool.query(
+    const node_rules = await pool.query(
       "select * from rules where parent_node_id = $1;",
       [this.parent]
     );
 
-    console.log(`node rule rows`)
-    console.log(node_rule.rows)
+    // console.log(`node rule rows`)
+    // console.log(node_rules.rows)
+
+    for (const node_rule of node_rules.rows) {
+
+      console.log(node_rule)
+
+      
+
+    }
+
+
+
 
     const nodes = await pool.query("select * from nodes where parent = $1", [this.parent])
 
     // console.log(`nodes are `)
 
-    console.log(nodes.rows)
+    // console.log(nodes.rows)
+
+    // for (node )
 
     const recursion = await pool.query(
       "select * from nodes where node_id = $1;",

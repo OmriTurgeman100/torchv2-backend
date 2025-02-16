@@ -9,7 +9,7 @@ class RulesEngine {
     this.parent = parnet;
   }
 
-  async StartRulesEngine() {
+  async StartRulesEngine(): Promise<void> {
 
     while (this.parent != null ) {
         const rule = await pool.query("select * from rules where parent_node_id = $1;", [this.parent])
@@ -47,7 +47,9 @@ class RulesEngine {
 
     const report_rule = await pool.query("select * from rules where parent_node_id = $1;", [this.parent])
 
-    console.log(report_rule.rows[0])
+    console.log(`report rules are`)
+
+    console.log(report_rule.rows)
 
     const recursion = await pool.query("select * from nodes where node_id = $1;", [this.parent])
 
@@ -59,7 +61,7 @@ class RulesEngine {
   }
 
   async Evaluate_Node_Rules(): Promise<void> {
-    console.log('hey from eval nodes')
+    // console.log('hey from eval nodes')
     
     const node_rule = await pool.query("select * from rules where parent_node_id = $1;", [this.parent])
 

@@ -157,6 +157,7 @@ export const post_rules = CatchAsync(
       );
     }
 
+    
     const rules = await pool.query(
       "insert into rules (parent_node_id, conditions, action, operator) values ($1, $2, $3, $4);",
       [parent_id, JSON.stringify(conditions), action, operator] // * must jsonify the data, postgres accept values as bson

@@ -17,5 +17,10 @@ router
   .route("/:id")
   .get(report_nodes_controller.navigate_tree_data);
 
+router
+  .route("/Rules/:id")
+  .get(report_nodes_controller.get_rules)
+  .post(report_nodes_controller.post_rules);
+
 
 export default router;

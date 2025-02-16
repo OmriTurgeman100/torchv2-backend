@@ -36,6 +36,7 @@ create table reports (
 CREATE TABLE rules (  
     rule_id SERIAL PRIMARY KEY,
     parent_node_id INTEGER REFERENCES nodes(node_id) ON DELETE CASCADE,
+    operator VARCHAR(50) NOT NULL,
     conditions JSONB NOT NULL,  
     action VARCHAR(50) NOT NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP

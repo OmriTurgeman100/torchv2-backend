@@ -127,3 +127,41 @@ export const BlackBox_Scripts = CatchAsync(
     });
   }
 );
+
+export const get_rules = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const parent_node_id: string = req.params.id;
+
+    const related_rules = await pool.query(
+      "select * from rules where parent_node_id = $1;",
+      [parent_node_id]
+    );
+
+    res.status(200).json({
+      data: related_rules.rows,
+    });
+  }
+);
+
+export const post_rules = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const parent_id: string = req.params.id;
+    const { action, conditions, operator } = req.body;
+
+    if (!parent_id || !conditions || !action || !operator) {
+      return next(
+        new AppError(
+          "Conditions, action, operator and parent Id are required",
+          400
+        )
+      );
+    }
+
+    const rules = await pool.query(
+      "insert into rules (parent_node_id, conditions, action, operator) values ($1, $2, $3, $4);",
+      [parent_id, JSON.stringify(conditions), action, operator] // * must jsonify the data, postgres accept values as bson
+    );
+
+    res.status(201).json({ message: "Rule created successfully" });
+  }
+);

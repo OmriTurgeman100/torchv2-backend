@@ -14,6 +14,10 @@ router
   .route("/BlackBox")
   .post(authController.authenticate_jwt_token, report_nodes_controller.BlackBox_Scripts);
 
+  router
+  .route("/Data")
+  .get(authController.authenticate_jwt_token, report_nodes_controller.distinct_reports);
+
 router
   .route("/:id")
   .get(authController.authenticate_jwt_token, report_nodes_controller.navigate_tree_data)
@@ -24,9 +28,6 @@ router
   .get(authController.authenticate_jwt_token, report_nodes_controller.get_rules)
   .post(authController.authenticate_jwt_token, report_nodes_controller.post_rules);
 
-// router
-//   .route("/distinct")
-//   .get(authController.authenticate_jwt_token, report_nodes_controller.get_rules);
 
 
 export default router;

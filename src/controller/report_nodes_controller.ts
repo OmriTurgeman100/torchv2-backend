@@ -200,14 +200,14 @@ export const post_rules = CatchAsync(
   }
 );
 
-// export const distinct_reports = CatchAsync(
-//   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-//     // const distinct_reports_list = await pool.query(
-//     //   "select distinct(report_id), title, description from reports;"
-//     // );
+export const distinct_reports = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const distinct_reports_list = await pool.query(
+      "select distinct(report_id), title, description from reports;"
+    );
 
-//     res.status(200).json({
-//       reports: "hey"
-//     });
-//   }
-// );
+    res.status(200).json({
+      reports: distinct_reports_list.rows,
+    });
+  }
+);

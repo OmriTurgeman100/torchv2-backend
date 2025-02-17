@@ -99,7 +99,7 @@ export const BlackBox_Scripts = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const report_id: string = req.body.report_id;
 
-    let parent: number = req.body.parent;
+    let parent: any = req.body.parent;
 
     const title: string = req.body.title;
 
@@ -131,6 +131,25 @@ export const BlackBox_Scripts = CatchAsync(
         if (report.report_id != report_id) {
           return next(
             new AppError("Report with the same parent already exists", 400)
+          );
+        }
+      }
+    }
+
+    //! New validation in database
+    if (parent) {
+      const report_from_database = await pool.query(
+        "select distinct(report_id), parent, time from reports where report_id = $1 order by time desc limit 1;",
+        [report_id]
+      );
+
+      if (report_from_database.rows[0].parent != null) {
+        if (report_from_database.rows[0].parent !== parent) {
+          return next(
+            new AppError(
+              "This report is already associated with a different parent.",
+              400
+            )
           );
         }
       }

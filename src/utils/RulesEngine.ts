@@ -3,8 +3,8 @@ import pool from "../database/database";
 class RulesEngine {
   parent: number | null;
 
-  constructor(parnet: number) {
-    this.parent = parnet;
+  constructor(parent: number) {
+    this.parent = parent;
   }
 
   async StartRulesEngine(): Promise<void> {

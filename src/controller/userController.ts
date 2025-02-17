@@ -99,9 +99,6 @@ export const display_user_permissions = CatchAsync(
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    // ! returns promise void because that the function is using async await, therefor it uses a promise .
-    // ! The function does not explicitly return anything (it only sends a response).
-
     const users = await pool.query("select id, username, role from users;");
 
     if (req.user.user_role !== "admin") {

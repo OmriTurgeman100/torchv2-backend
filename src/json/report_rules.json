@@ -1,8 +1,8 @@
 {
-  "operator": ">",
+  "operator": "<",
   "conditions": [
     {
-      "report_id": 14,
+      "report_id": "sample 1",
       "threshold": "50"
     }
   ],

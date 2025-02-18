@@ -173,7 +173,7 @@ export const BlackBox_Scripts = CatchAsync(
 
     const rule = new RulesEngine(parent);
 
-    rule.StartRulesEngine();
+    await rule.StartRulesEngine();
 
     res.status(201).json({
       message: "Report inserted successfully.",

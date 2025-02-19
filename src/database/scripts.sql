@@ -41,3 +41,6 @@ CREATE TABLE rules (
     action VARCHAR(50) NOT NULL,
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ); 
+
+select * from nodes where time < now() - interval '30 min';
+

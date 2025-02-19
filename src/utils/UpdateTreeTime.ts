@@ -6,26 +6,14 @@ const nowIsrael = nowUtc.tz("Asia/Jerusalem");
 
 const currentDateTime: string = nowIsrael.format("YYYY-MM-DD HH:mm");
 
-export const UpdateTreeTimeRecursion = async (
-  parent: number
-): Promise<void> => {
-  try {
-    let modified_parent: number = parent;
+export const expired_tree_evaluation = async (parent: number) => {
+  try { 
 
-    while (modified_parent != null) {
-      const request = await pool.query(
-        "select * from nodes where node_id = $1;",
-        [modified_parent]
-      );
+    
 
-      const update_tree_time = await pool.query(
-        "update nodes set time = now() where node_id = $1",
-        [modified_parent]
-      );
-
-      modified_parent = request.rows[0].parent;
-    }
+    console.log(parent)
+    // const tree = await pool.query("")
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };

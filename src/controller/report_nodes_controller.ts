@@ -136,7 +136,7 @@ export const BlackBox_Scripts = CatchAsync(
       }
     }
 
-    //! New validation in database
+
     if (parent) {
       const report_from_database = await pool.query(
         "select distinct(report_id), parent, time from reports where report_id = $1 order by time desc limit 1;",

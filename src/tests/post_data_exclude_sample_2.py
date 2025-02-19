@@ -15,7 +15,7 @@ def post_data_to_reports_exclude_report_id_sample_2():
 
         while True:
             for report in distinct_reports:
-                if report[0] != 'sample 2' or report[0] != 'sample 5':
+                if report[0] != 'sample 2' and report[0] != 'sample 5':
                     body = {
                         "report_id": report[0],
                         "title": report[0],

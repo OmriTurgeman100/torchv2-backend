@@ -4,7 +4,7 @@ import moment from "moment-timezone";
 const nowUtc = moment.utc();
 const nowIsrael = nowUtc.tz("Asia/Jerusalem");
 
-const currentDateTime: string = nowIsrael.format("YYYY-MM-DD HH:mm"); 
+const currentDateTime: string = nowIsrael.format("YYYY-MM-DD HH:mm");
 
 export const UpdateTreeTimeRecursion = async (
   parent: number
@@ -19,8 +19,8 @@ export const UpdateTreeTimeRecursion = async (
       );
 
       const update_tree_time = await pool.query(
-        "update nodes set time = $1 where node_id = $2",
-        [currentDateTime, modified_parent]
+        "update nodes set time = now() where node_id = $1",
+        [modified_parent]
       );
 
       modified_parent = request.rows[0].parent;

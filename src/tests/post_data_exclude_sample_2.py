@@ -20,7 +20,7 @@ def post_data_to_reports_exclude_report_id_sample_2():
                         "report_id": report[0],
                         "title": report[0],
                         "description": f"{report[0]} description",
-                        "value": 60,
+                        "value": 30,
               
                     }   
 

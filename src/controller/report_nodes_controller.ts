@@ -4,6 +4,7 @@ import AppError from "../utils/AppError";
 import { CatchAsync } from "../utils/CatchAsync";
 import RulesEngine from "../utils/RulesEngine";
 import { expired_tree_evaluation } from "../utils/UpdateTreeTime";
+import { UpdateTreeTimeRecursion } from "../utils/ExpiredDataTree";
 
 export const post_nodes = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -175,6 +176,9 @@ export const BlackBox_Scripts = CatchAsync(
 
     await rule.StartRulesEngine();
 
+
+    await UpdateTreeTimeRecursion(parent);
+    
     await expired_tree_evaluation(parent);
     //TODO 1, make is automatic node which checks for expired, and recursively updates the parent if finfs one,
 

@@ -2,7 +2,6 @@ import psycopg2
 from database_config import database_config
 import requests
 
-
 def post_data_to_reports_exclude():
     try:
         postgres = psycopg2.connect(**database_config)
@@ -21,16 +20,13 @@ def post_data_to_reports_exclude():
                         "title": report[0],
                         "description": f"{report[0]} description",
                         "value": 30,
-              
                     }   
-
                     print(body)
 
                     response = requests.post("http://localhost:3000/api/v1/reports/nodes/BlackBox", json=(body), headers={'Content-Type': 'application/json', 'Authorization': f'Bearer {token}' })
 
                     print(response.status_code)
 
-                
     except Exception as e:
         print(e)
 

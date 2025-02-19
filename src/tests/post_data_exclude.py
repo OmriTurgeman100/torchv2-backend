@@ -3,7 +3,7 @@ from database_config import database_config
 import requests
 
 
-def post_data_to_reports_exclude_report_id_sample_2():
+def post_data_to_reports_exclude():
     try:
         postgres = psycopg2.connect(**database_config)
         curor = postgres.cursor()
@@ -35,4 +35,4 @@ def post_data_to_reports_exclude_report_id_sample_2():
         print(e)
 
 
-post_data_to_reports_exclude_report_id_sample_2()
+post_data_to_reports_exclude()

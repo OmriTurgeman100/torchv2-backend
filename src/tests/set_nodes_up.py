@@ -14,7 +14,7 @@ def set_nodes_to_be_expired():
         for node in nodes:
             node_id = node[0]
 
-            cur.execute("UPDATE nodes SET status = 'expired' WHERE node_id = %s", (node_id,))
+            cur.execute("UPDATE nodes SET status = 'up' WHERE node_id = %s", (node_id,))
 
         postgres.commit()
         

@@ -176,7 +176,6 @@ export const BlackBox_Scripts = CatchAsync(
 
     await rule.StartRulesEngine();
 
-
     await UpdateTreeTimeRecursion(parent);
 
     await expired_tree_evaluation(); // * requires more testing, not optimal for production yet.

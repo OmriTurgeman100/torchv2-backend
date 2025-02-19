@@ -175,7 +175,12 @@ export const BlackBox_Scripts = CatchAsync(
 
     await rule.StartRulesEngine();
 
-    await UpdateTreeTimeRecursion(parent);
+    await UpdateTreeTimeRecursion(parent); 
+    //TODO 1, make is automatic node which checks for expired, and recursively updates the parent if finfs one,
+    
+    // TODO 2, when new report arrive, make them check if any entity is expird
+
+    
 
     res.status(201).json({
       message: "Report inserted successfully.",

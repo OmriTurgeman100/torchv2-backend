@@ -44,3 +44,4 @@ CREATE TABLE rules (
 
 select * from nodes where time < now() - interval '30 min';
 
+select * from nodes where excluded != 'true' and time < now() - interval '30 min';

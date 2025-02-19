@@ -178,8 +178,8 @@ export const BlackBox_Scripts = CatchAsync(
 
 
     await UpdateTreeTimeRecursion(parent);
-    
-    await expired_tree_evaluation(parent);
+
+    await expired_tree_evaluation();
     //TODO 1, make is automatic node which checks for expired, and recursively updates the parent if finfs one,
 
     // TODO 2, when new report arrive, make them check if any entity is expird

@@ -1,18 +1,30 @@
 import pool from "../database/database";
-import moment from "moment-timezone";
 
-const nowUtc = moment.utc();
-const nowIsrael = nowUtc.tz("Asia/Jerusalem");
+export const expired_tree_evaluation = async (): Promise<void> => {
+  try {
+    let expired_node_parent: number | null = null;
 
-const currentDateTime: string = nowIsrael.format("YYYY-MM-DD HH:mm");
+    const expired_node = await pool.query(
+      "select * from nodes where time < now() - interval '30 min';"
+    );
 
-export const expired_tree_evaluation = async (parent: number) => {
-  try { 
+    for (const node of expired_node.rows) {
+      expired_node_parent = node.parent;
 
-    
+      while (expired_node_parent != null) {
+        const data = await pool.query(
+          "select * from nodes where node_id = $1",
+          [expired_node_parent]
+        );
 
-    console.log(parent)
-    // const tree = await pool.query("")
+        const update_recursion = await pool.query(
+          "update nodes set status = 'expired' where node_id = $1;",
+          [expired_node_parent]
+        );
+
+        expired_node_parent = data.rows[0].parent;
+      }
+    }
   } catch (error) {
     console.log(error);
   }

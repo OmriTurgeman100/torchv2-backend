@@ -11,11 +11,11 @@ def post_data_to_reports_exclude():
         curor.execute("select distinct(report_id) from reports;")
         distinct_reports = curor.fetchall()
 
-        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsInVzZXJfaWQiOjE0NiwidXNlcl9yb2xlIjoiZ3Vlc3QiLCJpYXQiOjE3Mzk3MjgyNjQsImV4cCI6MTczOTk4NzQ2NH0.3DGA--mXmqLcF3sMWhy_lXlAYbEvkab7sSqG3aPLW_o'
+        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsInVzZXJfaWQiOjE0NiwidXNlcl9yb2xlIjoiZ3Vlc3QiLCJpYXQiOjE3Mzk5OTE1NjQsImV4cCI6MTc0MDI1MDc2NH0.tXSjkBMG_RAQPcQAVzS6Z27FDkevwwWW-0zCg9E3l2Q'
 
         while True:
             for report in distinct_reports:
-                if report[0] != 'sample 7':
+                if report[0] != 'sample 5':
                     body = {
                         "report_id": report[0],
                         "title": report[0],

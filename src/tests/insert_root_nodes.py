@@ -1,22 +1,15 @@
 import psycopg2
-
-db_config = {
-    "dbname": "postgres",
-    "user": "postgres",
-    "password": "postgres",
-    "host": "localhost",
-    "port": "5432"  
-}
+from database_config import database_config
 
 def insert_root_nodes(amount):
     try:
-        postgres = psycopg2.connect(**db_config)
-        cur = postgres.cursor()
+        postgres = psycopg2.connect(**database_config)
+        curor = postgres.cursor()
 
         for number in range(0,amount):
             name = f"node {number}"
             desc = f"desc {number}"
-            cur.execute("insert into nodes (title, description) values (%s, %s)", (name, desc))
+            curor.execute("insert into nodes (title, description) values (%s, %s)", (name, desc))
 
         postgres.commit()
         

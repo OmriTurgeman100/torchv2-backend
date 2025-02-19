@@ -27,7 +27,7 @@ def post_data_to_reports_exclude():
 
                     print(response.status_code)
 
-                    shutil.rmtree("__pycache__", ignore_errors=True)
+                    
 
     except Exception as e:
         print(e)

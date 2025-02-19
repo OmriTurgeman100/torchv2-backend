@@ -27,8 +27,6 @@ def post_data_to_reports_exclude():
 
                     print(response.status_code)
 
-                    
-
     except Exception as e:
         print(e)
 

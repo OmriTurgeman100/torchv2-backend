@@ -152,7 +152,7 @@ export const refresh_user_token = (
         user_role: string;
       };
 
-      const user_data: {} = { user_name, user_id, user_role };
+      const user_data = { user_name, user_id, user_role };
 
       const access_token = jwt.sign(
         user_data,

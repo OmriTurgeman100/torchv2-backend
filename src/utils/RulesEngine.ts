@@ -93,9 +93,10 @@ class RulesEngine {
         [this.parent]
       );
 
-      const nodes = await pool.query("select * from nodes where parent = $1", [
-        this.parent,
-      ]);
+      const nodes = await pool.query(
+        "select * from nodes where parent = $1 and excluded = 'false';", // ! new change might wan't to text for production
+        [this.parent]
+      );
 
       for (const node_rule of node_rules.rows) {
         const operator: string = node_rule.operator;

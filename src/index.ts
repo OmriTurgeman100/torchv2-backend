@@ -9,7 +9,6 @@ import { Request, Response, NextFunction } from "express";
 import AppError from "./utils/AppError";
 import path from "path";
 import { GlobalError } from "./utils/GlobalError";
-import currentDateTime from "./utils/UpdateTreeTime"
 
 const app = express();
 const port: number = 3000;
@@ -29,12 +28,10 @@ app.listen(port, () => {
   console.log(
     `🚀 Server is up and running! Access it at: http://localhost:${port}/`
   );
-
-  console.log(currentDateTime)
 });
 
 app.use("*", (req: Request, res: Response, next: NextFunction): void => {
-  next(new AppError(`Cant find ${req.originalUrl} on the server`, 401)); 
+  next(new AppError(`Cant find ${req.originalUrl} on the server`, 401));
 });
 
 app.use(GlobalError);

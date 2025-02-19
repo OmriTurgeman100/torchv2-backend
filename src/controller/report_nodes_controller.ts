@@ -3,6 +3,7 @@ import pool from "../database/database";
 import AppError from "../utils/AppError";
 import { CatchAsync } from "../utils/CatchAsync";
 import RulesEngine from "../utils/RulesEngine";
+import { UpdateTreeTimeRecursion } from "../utils/UpdateTreeTime";
 
 export const post_nodes = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -136,7 +137,6 @@ export const BlackBox_Scripts = CatchAsync(
       }
     }
 
-
     if (parent) {
       const report_from_database = await pool.query(
         "select distinct(report_id), parent, time from reports where report_id = $1 order by time desc limit 1;",
@@ -174,6 +174,8 @@ export const BlackBox_Scripts = CatchAsync(
     const rule = new RulesEngine(parent);
 
     await rule.StartRulesEngine();
+
+    await UpdateTreeTimeRecursion(parent);
 
     res.status(201).json({
       message: "Report inserted successfully.",

@@ -28,6 +28,11 @@ router
   .get(authController.authenticate_jwt_token, report_nodes_controller.get_rules)
   .post(authController.authenticate_jwt_token, report_nodes_controller.post_rules);
 
+router
+.route("/Exclude/:id/:status")
+.patch(authController.authenticate_jwt_token, report_nodes_controller.set_node_excluded)
+
+
 
 
 export default router;

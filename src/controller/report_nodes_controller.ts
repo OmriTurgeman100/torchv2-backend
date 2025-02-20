@@ -240,3 +240,17 @@ export const distinct_reports = CatchAsync(
     });
   }
 );
+
+export const set_node_excluded = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const excluded_node = await pool.query(
+      "update nodes set excluded = $1 where node_id = $2 returning *",
+      [req.params.status, req.params.id]
+    );
+
+    res.json({
+      message: "Node successfully excluded",
+      node: excluded_node.rows[0],
+    });
+  }
+);

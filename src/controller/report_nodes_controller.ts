@@ -254,3 +254,28 @@ export const set_node_excluded = CatchAsync(
     });
   }
 );
+
+export const display_node_templates = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const node_templates = await pool.query("select * from node_templates;");
+
+    res.status(200).json({
+      node_templates: node_templates.rows,
+    });
+  }
+);
+
+export const create_node_templates = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const template = req.body.template;
+
+    const node_templates = await pool.query(
+      "insert into node_templates (name) values ($1) returning *;",
+      [template]
+    );
+
+    res.status(201).json({
+      node_templates: node_templates.rows,
+    });
+  }
+);

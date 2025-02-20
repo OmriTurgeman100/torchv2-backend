@@ -42,6 +42,11 @@ CREATE TABLE rules (
     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ); 
 
+create table node_templates (
+    id serial primary key,
+    name varchar(50)
+);
+
 select * from nodes where time < now() - interval '30 min';
 
 select * from nodes where excluded != 'true' and time < now() - interval '30 min';

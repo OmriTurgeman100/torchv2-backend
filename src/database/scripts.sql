@@ -44,7 +44,7 @@ CREATE TABLE rules (
 
 create table node_templates (
     id serial primary key,
-    name varchar(50)
+    name varchar(50) unique not null
 );
 
 select * from nodes where time < now() - interval '30 min';

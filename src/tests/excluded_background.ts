@@ -9,17 +9,15 @@ export const expired_tree_evaluation = async (): Promise<void> => {
     );
 
     for (const node of expired_node.rows) {
-      // Check if the node exists in rules
       const rule_check = await pool.query(
         "SELECT 1 FROM rules WHERE parent_node_id = $1 LIMIT 1;",
         [node.node_id]
       );
 
       if (rule_check.rowCount === 0) {
-        continue; // Skip this node if it is not in rules
+        continue;
       }
 
-      // Update the node to expired
       await pool.query(
         "UPDATE nodes SET status = 'expired' WHERE node_id = $1;",
         [node.node_id]
@@ -28,14 +26,13 @@ export const expired_tree_evaluation = async (): Promise<void> => {
       expired_node_parent = node.parent;
 
       while (expired_node_parent != null) {
-        // Check if parent exists in rules before updating
         const parent_rule_check = await pool.query(
           "SELECT 1 FROM rules WHERE parent_node_id = $1 LIMIT 1;",
           [expired_node_parent]
         );
 
         if (parent_rule_check.rowCount === 0) {
-          break; // Stop updating further if parent is not in rules
+          break;
         }
 
         const parent_node = await pool.query(

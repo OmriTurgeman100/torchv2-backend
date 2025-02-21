@@ -8,8 +8,6 @@ export const expired_tree_evaluation = async (): Promise<void> => {
       "SELECT * FROM nodes WHERE time < NOW() - INTERVAL '1 minutes';"
     );
 
-    console.log(expired_node.rows);
-
     for (const node of expired_node.rows) {
       // Check if the node exists in rules
       const rule_check = await pool.query(
@@ -45,8 +43,6 @@ export const expired_tree_evaluation = async (): Promise<void> => {
           [expired_node_parent]
         );
 
-        console.log(parent_node.rows);
-
         await pool.query(
           "UPDATE nodes SET status = 'expired' WHERE node_id = $1;",
           [expired_node_parent]
@@ -56,6 +52,6 @@ export const expired_tree_evaluation = async (): Promise<void> => {
       }
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };

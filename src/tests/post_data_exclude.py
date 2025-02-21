@@ -1,5 +1,5 @@
 import psycopg2
-from database_config import database_config
+from config import database_config
 import requests
 import time
 

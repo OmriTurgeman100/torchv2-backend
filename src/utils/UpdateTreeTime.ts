@@ -5,8 +5,10 @@ export const expired_tree_evaluation = async (): Promise<void> => {
     let expired_node_parent: number | null = null;
 
     const expired_node = await pool.query(
-      "select * from nodes where time < now() - interval '2 min';"
+      "select * from nodes where time < now() - interval '1 min';"
     );
+
+    console.log(expired_node.rows)
 
     for (const node of expired_node.rows) {
       await pool.query(
@@ -21,6 +23,8 @@ export const expired_tree_evaluation = async (): Promise<void> => {
           "select * from nodes where node_id = $1",
           [expired_node_parent]
         );
+
+        console.log(node.rows)
 
         const update_recursion = await pool.query(
           "update nodes set status = 'expired' where node_id = $1;",

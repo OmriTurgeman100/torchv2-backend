@@ -51,4 +51,4 @@ select * from nodes where time < now() - interval '30 min';
 
 select * from nodes where excluded != 'true' and time < now() - interval '30 min';
 
-delete from nodes where title = 'cpu usage' or title = 'latency' or title = ' statuscode' or title = 'ram usage' or title = ;
+delete from nodes where title = 'cpu usage' or title = 'latency' or title = ' statuscode' or title = 'ram usage' or title = '';

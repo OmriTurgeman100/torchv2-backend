@@ -1,6 +1,7 @@
 import psycopg2
 from database_config import database_config
 import requests
+import time
 
 def post_data_to_reports_exclude():
     try:
@@ -14,7 +15,7 @@ def post_data_to_reports_exclude():
 
         while True:
             for report in distinct_reports:
-                if report[0] != 'sample 500':
+                if report[0] != 'sample 99':
                     body = {
                         "report_id": report[0],
                         "title": report[0],
@@ -26,6 +27,8 @@ def post_data_to_reports_exclude():
                     response = requests.post("http://localhost:3000/api/v1/reports/nodes/BlackBox", json=(body), headers={'Content-Type': 'application/json', 'Authorization': f'Bearer {token}' })
 
                     print(response.status_code)
+
+                time.sleep(2)
 
     except Exception as e:
         print(e)

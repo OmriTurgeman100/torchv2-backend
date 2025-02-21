@@ -24,7 +24,7 @@ export const expired_tree_evaluation = async (): Promise<void> => {
           [expired_node_parent]
         );
 
-        console.log(node.rows); // * test
+        console.log(node.rows); 
 
         const update_recursion = await pool.query(
           "update nodes set status = 'expired' where node_id = $1;",

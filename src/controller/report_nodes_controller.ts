@@ -66,10 +66,22 @@ export const delete_node = CatchAsync(
       );
     }
 
-    const delete_query = await pool.query(
-      "delete from nodes where node_id = $1",
-      [node_id]
-    );
+    // const modified_id = node_id;
+
+    // const node = await pool.query("select * from nodes where parent = $1;", [
+    //   modified_id,
+    // ]);
+
+    // console.log(node.rows);
+
+    // for (const node_data of node.rows) {
+    //   console.log(node_data);
+    // }
+
+    // // const delete_query = await pool.query(
+    // //   "delete from nodes where node_id = $1",
+    // //   [node_id]
+    // // );
 
     res.status(200).json({
       data: "test",

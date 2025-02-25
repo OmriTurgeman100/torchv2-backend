@@ -309,6 +309,22 @@ export const detach_report = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const report_id = req.params.id;
 
+    const selected_report = await pool.query(
+      "select * from reports where report_id = $1 order by time desc limit 1;",
+      [report_id]
+    );
+
+    const report_parent: number = selected_report.rows[0].parent;
+
+    const has_rules = await pool.query(
+      "select * from rules where parent_node_id = $1",
+      [report_parent]
+    );
+
+    if (has_rules.rows.length > 0) {
+      return next(new AppError("Please remove rules first", 400));
+    }
+
     const detach_report_query = await pool.query(
       "update reports set parent = null where report_id = $1;",
       [report_id]

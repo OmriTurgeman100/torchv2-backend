@@ -36,4 +36,8 @@ router
   .route("/Exclude/:id/:status")
   .patch(authController.authenticate_jwt_token, report_nodes_controller.set_node_excluded);
 
+router
+  .route("/detach/:id")
+  .patch(authController.authenticate_jwt_token, report_nodes_controller.detach_report);
+
 export default router;

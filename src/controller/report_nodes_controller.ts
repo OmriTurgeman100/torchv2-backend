@@ -304,3 +304,18 @@ export const create_node_templates = CatchAsync(
     });
   }
 );
+
+export const detach_report = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const report_id = req.params.id;
+
+    const detach_report_query = await pool.query(
+      "update reports set parent = null where report_id = $1;",
+      [report_id]
+    );
+
+    res.status(204).json({
+      message: "report has been updated",
+    });
+  }
+);

@@ -80,21 +80,21 @@ export const delete_node = CatchAsync(
             400
           )
         );
-      } 
+      }
+
+      const has_report = await pool.query(
+        "select * from reports where parent = $1",
+        [node.node_id]
+      );
+
+      if (has_report.rows.length > 0) {
+        return next(new AppError("Please remove the report under", 400));
+      }
     }
 
-    const has_report = await pool.query(
-      "select * from reports where parent = $1",
-      [node_id]
-    );
-
-    if (has_report.rows.length > 0) {
-      return next(new AppError("Please remove the report under", 400));
+    for (const node of nodes_hierarchy.rows) {
+      await pool.query("delete from nodes where node_id = $1", [node.node_id]);
     }
-
-    // for (const node of nodes_hierarchy.rows) {
-    //   await pool.query("delete from nodes where node_id = $1", [node.node_id]);
-    // }
 
     res.status(204).json({
       message: "Node has been successfully deleted.",

@@ -81,15 +81,15 @@ export const login_users = CatchAsync(
       }
     );
 
-    const refresh_token = jwt.sign(
-      user,
-      process.env.JWT_REFRESH_TOKEN as string,
-      {
-        expiresIn: "80d",
-      }
-    );
+    // const refresh_token = jwt.sign(
+    //   user,
+    //   process.env.JWT_REFRESH_TOKEN as string,
+    //   {
+    //     expiresIn: "80d",
+    //   }
+    // );
 
-    res.cookie("refresh_token", refresh_token, { httpOnly: true });
+    // res.cookie("refresh_token", refresh_token, { httpOnly: true });
 
     res.status(200).json({
       message: "login sucess",

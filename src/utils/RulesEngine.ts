@@ -15,6 +15,10 @@ class RulesEngine {
           [this.parent]
         );
 
+        if (rule.rows.length === 0) {
+          break;
+        }
+
         let rules_data = rule.rows[0].conditions[0];
 
         if (rules_data.report_id) {

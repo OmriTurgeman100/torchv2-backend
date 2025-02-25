@@ -77,7 +77,7 @@ export const login_users = CatchAsync(
       user,
       process.env.JWT_SECRET_TOKEN as string,
       {
-        expiresIn: "3d",
+        expiresIn: "80d",
       }
     );
 
@@ -85,7 +85,7 @@ export const login_users = CatchAsync(
       user,
       process.env.JWT_REFRESH_TOKEN as string,
       {
-        expiresIn: "7d",
+        expiresIn: "80d",
       }
     );
 

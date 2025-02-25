@@ -141,7 +141,6 @@ export const set_permissions = CatchAsync(
       requested_role,
       requested_user_id,
     ]);
-    // // const data = await pool.query("update users set role = $1 where id = $2", [])
 
     res.status(200).json({
       data: "successfully applied changes.",

@@ -1,5 +1,5 @@
 import psycopg2
-from config import database_config
+from config import database_config, token
 import requests
 import time
 
@@ -10,8 +10,6 @@ def post_data_to_reports_exclude():
         
         curor.execute("select distinct(report_id) from reports;")
         distinct_reports = curor.fetchall()
-
-        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJhZG1pbiIsInVzZXJfaWQiOjE0NiwidXNlcl9yb2xlIjoiZ3Vlc3QiLCJpYXQiOjE3Mzk5OTE1NjQsImV4cCI6MTc0MDI1MDc2NH0.tXSjkBMG_RAQPcQAVzS6Z27FDkevwwWW-0zCg9E3l2Q'
 
         while True:
             for report in distinct_reports:

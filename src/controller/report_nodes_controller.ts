@@ -52,39 +52,43 @@ export const delete_node = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const node_id = req.params.id;
 
-    const has_rules = await pool.query(
-      "select * from rules where parent_node_id = $1",
+    const nodes_recursive_nodes_hierarchy_cte_query: string = `
+    with recursive node_hierarchy as (
+        select node_id, parent, title, description, status, excluded, time from nodes where node_id = $1
+        union all
+        select nodes.node_id, nodes.parent, nodes.title, nodes.description, nodes.status, nodes.excluded, nodes.time 
+        from nodes inner join node_hierarchy on nodes.parent = node_hierarchy.node_id
+    ) 
+    select node_id from node_hierarchy;
+    `;
+
+    const nodes_hierarchy = await pool.query(
+      nodes_recursive_nodes_hierarchy_cte_query,
       [node_id]
     );
 
-    if (has_rules.rows.length > 0) {
-      return next(
-        new AppError(
-          "Cannot delete this node. Please remove its associated rules first.",
-          400
-        )
+    for (const node of nodes_hierarchy.rows) {
+      const has_rules = await pool.query(
+        "select * from rules where parent_node_id = $1",
+        [node.node_id]
       );
+
+      if (has_rules.rows.length > 0) {
+        return next(
+          new AppError(
+            "Cannot delete this node. Please remove its associated rules first.",
+            400
+          )
+        );
+      }
     }
 
-    // const modified_id = node_id;
+    for (const node of nodes_hierarchy.rows) {
+      await pool.query("delete from nodes where node_id = $1", [node.node_id]);
+    }
 
-    // const node = await pool.query("select * from nodes where parent = $1;", [
-    //   modified_id,
-    // ]);
-
-    // console.log(node.rows);
-
-    // for (const node_data of node.rows) {
-    //   console.log(node_data);
-    // }
-
-    // // const delete_query = await pool.query(
-    // //   "delete from nodes where node_id = $1",
-    // //   [node_id]
-    // // );
-
-    res.status(200).json({
-      data: "test",
+    res.status(204).json({
+      message: "Node has been successfully deleted.",
     });
   }
 );

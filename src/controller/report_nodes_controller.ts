@@ -126,7 +126,7 @@ export const BlackBox_Scripts = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const report_id: string = req.body.report_id;
 
-    let parent: any = req.body.parent;
+    let parent: number = req.body.parent;
 
     const title: string = req.body.title;
 

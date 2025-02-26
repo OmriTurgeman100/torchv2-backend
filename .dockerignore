@@ -7,6 +7,9 @@ node_modules
 # tests folder
 /tests/
 
+# kubernetes
+/kubernetes/
+
 # Operating system files
 .DS_Store
 Thumbs.db

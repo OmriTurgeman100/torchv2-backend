@@ -17,5 +17,4 @@ ENV DB_NAME=postgres
 ENV DB_USER=postgres
 ENV DB_PASS=postgres
 
-
 CMD ["npm", "run", "start"]

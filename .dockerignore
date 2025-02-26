@@ -4,6 +4,9 @@ node_modules
 # Logs
 *.log
 
+# tests folder
+/tests/
+
 # Operating system files
 .DS_Store
 Thumbs.db

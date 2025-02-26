@@ -88,7 +88,26 @@ export const delete_node = CatchAsync(
       );
 
       if (has_report.rows.length > 0) {
-        return next(new AppError("Please remove the report under", 400));
+        return next(
+          new AppError(
+            "Please delete the report associated with this node.",
+            400
+          )
+        );
+      }
+
+      const has_description = await pool.query(
+        "select * from nodes_description where parent = $1",
+        [node.node_id]
+      );
+
+      if (has_description.rows.length > 0) {
+        return next(
+          new AppError(
+            "Please delete the description associated under this node.",
+            400
+          )
+        );
       }
     }
 

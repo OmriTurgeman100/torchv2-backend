@@ -109,8 +109,8 @@ class RulesEngine {
         if (operator === "and") {
           let case_matched: boolean = true;
           for (const condition of node_rule.conditions) {
-            const condition_node_id = condition.node_id;
-            const condition_node_value = condition.value;
+            const condition_node_id: number = condition.node_id;
+            const condition_node_value: string = condition.value;
 
             for (const node of nodes.rows) {
               if (node.node_id === condition_node_id) {
@@ -129,8 +129,8 @@ class RulesEngine {
           let case_matched: boolean = false;
 
           for (const condition of node_rule.conditions) {
-            const condition_node_id = condition.node_id;
-            const condition_node_value = condition.value;
+            const condition_node_id: number = condition.node_id;
+            const condition_node_value: string = condition.value;
 
             for (const node of nodes.rows) {
               if (node.node_id === condition_node_id) {

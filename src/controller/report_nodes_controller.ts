@@ -50,7 +50,7 @@ export const get_root_nodes = CatchAsync(
 
 export const delete_node = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const node_id = req.params.id;
+    const node_id: string = req.params.id;
 
     const nodes_recursive_nodes_hierarchy_cte_query: string = `
     with recursive node_hierarchy as (
@@ -104,7 +104,7 @@ export const delete_node = CatchAsync(
 
 export const navigate_tree_data = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const parent = req.params.id;
+    const parent: string = req.params.id;
 
     const reports = await pool.query(
       "select distinct on (report_id) report_id, parent, title, description, value, excluded, time from reports where parent = $1 order by report_id, time desc;",
@@ -307,7 +307,7 @@ export const create_node_templates = CatchAsync(
 
 export const detach_report = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const report_id = req.params.id;
+    const report_id: string = req.params.id;
 
     const selected_report = await pool.query(
       "select * from reports where report_id = $1 order by time desc limit 1;",
@@ -332,6 +332,88 @@ export const detach_report = CatchAsync(
 
     res.status(204).json({
       message: "report has been updated",
+    });
+  }
+);
+
+export const display_nodes_description = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const parent: string = req.params.id;
+
+    const specified_node_description = await pool.query(
+      "select a.id, a.parent, nodes.title , a.team, a.contact, a.description from nodes_description a inner join nodes on a.parent = nodes.node_id where a.parent = $1;",
+      [parent]
+    );
+
+    res.status(200).json({
+      data: specified_node_description.rows,
+    });
+  }
+);
+
+export const insert_nodes_description = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const parent: string = req.params.id;
+
+    const team: string = req.body.team;
+
+    const contact: string = req.body.contact;
+
+    const description: string = req.body.description;
+
+    const inserted_description = await pool.query(
+      "insert into nodes_description (parent, team, contact, description) values ($1, $2, $3, $4) returning *;",
+      [parent, team, contact, description]
+    );
+
+    res.status(201).json({
+      data: inserted_description.rows,
+    });
+  }
+);
+
+export const update_nodes_description = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const node_description_id: string = req.params.id;
+
+    const team: string = req.body.team;
+
+    const contact: string = req.body.contact;
+
+    const description: string = req.body.description;
+
+    if (!team && !contact && !description) {
+      return next(new AppError("No data specified", 400));
+    }
+
+    if (team) {
+      await pool.query("update nodes_description set team = $1 where id = $2", [
+        team,
+        node_description_id,
+      ]);
+    }
+
+    if (contact) {
+      await pool.query(
+        "update nodes_description set contact = $1 where id = $2",
+        [contact, node_description_id]
+      );
+    }
+
+    if (description) {
+      await pool.query(
+        "update nodes_description set description = $1 where id = $2",
+        [description, node_description_id]
+      );
+    }
+
+    const modified_data = await pool.query(
+      "select * from nodes_description where id = $1",
+      [node_description_id]
+    );
+
+    res.status(200).json({
+      data: modified_data.rows,
     });
   }
 );

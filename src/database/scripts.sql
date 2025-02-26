@@ -47,6 +47,15 @@ create table node_templates (
     name varchar(50) unique not null
 );
 
+create table nodes_description (
+	id serial primary key,
+	parent integer references nodes(node_id) not null,
+	team text,
+	contact text,
+	description text not null
+);
+
+
 select * from nodes where time < now() - interval '30 min';
 
 select * from nodes where excluded != 'true' and time < now() - interval '30 min';

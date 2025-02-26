@@ -30,7 +30,8 @@ router
 router
   .route("/Rules/:id")
   .get(authController.authenticate_jwt_token, report_nodes_controller.get_rules)
-  .post(authController.authenticate_jwt_token, report_nodes_controller.post_rules);
+  .post(authController.authenticate_jwt_token, report_nodes_controller.post_rules)
+  .delete(authController.authenticate_jwt_token, report_nodes_controller.delete_rule);
 
 router
   .route("/Exclude/:id/:status")

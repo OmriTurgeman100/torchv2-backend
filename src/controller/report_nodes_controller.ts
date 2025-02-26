@@ -449,3 +449,15 @@ export const delete_node_description = CatchAsync(
     });
   }
 );
+
+export const delete_rule = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const rule_id: string = req.params.id;
+
+    await pool.query("delete from rules where rule_id = $1;", [rule_id]);
+
+    res.status(204).json({
+      data: rule_id,
+    });
+  }
+);

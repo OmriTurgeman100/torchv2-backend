@@ -417,3 +417,16 @@ export const update_nodes_description = CatchAsync(
     });
   }
 );
+
+export const delete_node_description = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const node_description_id: string = req.params.id;
+    await pool.query("DELETE FROM nodes_description WHERE id = $1", [
+      node_description_id,
+    ]);
+
+    res.status(200).json({
+      message: `Node description with ID ${node_description_id} has been successfully deleted.`,
+    });
+  }
+);

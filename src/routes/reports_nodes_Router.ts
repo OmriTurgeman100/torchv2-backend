@@ -44,6 +44,7 @@ router
   .route("/description/:id")
   .get(authController.authenticate_jwt_token, report_nodes_controller.display_nodes_description)
   .post(authController.authenticate_jwt_token, report_nodes_controller.insert_nodes_description)
-  .patch(authController.authenticate_jwt_token, report_nodes_controller.update_nodes_description);
+  .patch(authController.authenticate_jwt_token, report_nodes_controller.update_nodes_description)
+  .delete(authController.authenticate_jwt_token, report_nodes_controller.delete_node_description);
 
 export default router;

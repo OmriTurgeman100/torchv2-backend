@@ -461,3 +461,31 @@ export const delete_rule = CatchAsync(
     });
   }
 );
+
+export const display_node_comments = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const node_id: string = req.params.id;
+    const filter: string = req.params.filter;
+
+    const node_comments = await pool.query(
+      `select * from node_comments where parent = $1 order by time ${filter}`,
+      [node_id]
+    );
+
+    res.status(200).json({ data: node_comments.rows });
+  }
+);
+
+export const insert_node_comments = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const node_id: string = req.params.id;
+    const comment: string = req.body.comment;
+
+    const node_comments = await pool.query(
+      "insert into node_comments (parent, comment) values ($1, $2) returning *;",
+      [node_id, comment]
+    );
+
+    res.status(200).json({ data: node_comments.rows });
+  }
+);

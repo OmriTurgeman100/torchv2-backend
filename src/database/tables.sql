@@ -55,3 +55,9 @@ create table nodes_description (
 	description text not null
 );
 
+create table node_comments (
+	id serial primary key,
+	parent integer references nodes(node_id) ON DELETE CASCADE,
+	comment text not null,
+	time timestamp default CURRENT_TIMESTAMP
+);

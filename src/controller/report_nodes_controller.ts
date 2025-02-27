@@ -508,7 +508,7 @@ export const delete_comment = CatchAsync(
 export const report_graph = CatchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const report_id: string = req.params.id;
-    let filter: string = req.params.filter;
+    const filter: string = req.params.filter;
 
     const report_time = await pool.query(
       `select value, time from reports where report_id = $1 and time >= now() - interval '${filter}' order by time desc;`,

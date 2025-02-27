@@ -59,5 +59,4 @@ router
   .route("/Graph/:id/:filter")
   .get(authController.authenticate_jwt_token, report_nodes_controller.report_graph);
 
-
 export default router;

@@ -48,7 +48,6 @@ router
   .patch(authController.authenticate_jwt_token, report_nodes_controller.update_nodes_description)
   .delete(authController.authenticate_jwt_token, report_nodes_controller.delete_node_description);
 
-
 router
   .route("/comments/:id/:filter")
   .get(authController.authenticate_jwt_token, report_nodes_controller. display_node_comments)
@@ -58,5 +57,9 @@ router
 router
   .route("/Graph/:id/:filter")
   .get(authController.authenticate_jwt_token, report_nodes_controller.report_graph);
+
+router
+  .route("/hierarchy/:id")
+  .get(authController.authenticate_jwt_token, report_nodes_controller.path_hierarchy);
 
 export default router;

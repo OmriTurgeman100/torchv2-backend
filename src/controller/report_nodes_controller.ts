@@ -529,3 +529,12 @@ export const report_graph = CatchAsync(
     });
   }
 );
+
+export const path_hierarchy = CatchAsync(
+  (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    res.status(200).json({
+      data: "path",
+    });
+  }
+);

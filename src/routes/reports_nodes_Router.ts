@@ -55,4 +55,9 @@ router
   .post(authController.authenticate_jwt_token, report_nodes_controller.insert_node_comments)
   .delete(authController.authenticate_jwt_token, report_nodes_controller.delete_comment);
 
+router
+  .route("/Graph/:id")
+  .get(authController.authenticate_jwt_token, report_nodes_controller.report_graph);
+
+
 export default router;

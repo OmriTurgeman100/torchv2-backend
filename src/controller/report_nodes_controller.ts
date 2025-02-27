@@ -504,3 +504,18 @@ export const delete_comment = CatchAsync(
     });
   }
 );
+
+export const report_graph = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const report_id: string = req.params.id;
+
+    const report_time = await pool.query(
+      "select value, time from reports where report_id = $1 order by time desc;",
+      [report_id]
+    );
+
+    res.status(200).json({
+      time_series_data: report_time.rows,
+    });
+  }
+);

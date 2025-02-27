@@ -56,7 +56,7 @@ router
   .delete(authController.authenticate_jwt_token, report_nodes_controller.delete_comment);
 
 router
-  .route("/Graph/:id")
+  .route("/Graph/:id/:filter")
   .get(authController.authenticate_jwt_token, report_nodes_controller.report_graph);
 
 

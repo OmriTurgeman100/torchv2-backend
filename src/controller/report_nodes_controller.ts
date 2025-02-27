@@ -531,10 +531,50 @@ export const report_graph = CatchAsync(
 );
 
 export const path_hierarchy = CatchAsync(
-  (req: Request, res: Response, next: NextFunction) => {
-    const id = req.params.id;
+  async (req: Request, res: Response, next: NextFunction) => {
+    const node_id: string = req.params.id;
+
+    const nodes_recursive_nodes_hierarchy_cte_query: string = `
+    with recursive node_hierarchy as (
+        select node_id, parent, title, description, status, excluded, time from nodes where node_id = $1
+        union all
+        select nodes.node_id, nodes.parent, nodes.title, nodes.description, nodes.status, nodes.excluded, nodes.time 
+        from nodes inner join node_hierarchy on nodes.parent = node_hierarchy.node_id
+    ) 
+    select node_id as id, parent, title, status from node_hierarchy;
+    `;
+
+    const report_recursive_nodes_hierarchy_cte_query: string = `
+    with report_related_to_node AS (
+      select distinct on (reports.report_id) reports.report_id, reports.title, reports.id, reports.value, reports.parent 
+      FROM reports where parent = $1
+    ) 
+    select id, parent, title, value as status from report_related_to_node;
+  `;
+
+    const nodes_hierarchy = await pool.query(
+      nodes_recursive_nodes_hierarchy_cte_query,
+      [node_id]
+    );
+
+    const node_hierarchy = [];
+
+    for (const node of nodes_hierarchy.rows) {
+      node_hierarchy.push(node);
+      const node_id: number = node.id;
+
+      const has_report = await pool.query(
+        report_recursive_nodes_hierarchy_cte_query,
+        [node_id]
+      );
+
+      if (has_report.rows.length > 0) {
+        node_hierarchy.push(has_report.rows[0]);
+      }
+    }
+
     res.status(200).json({
-      data: "path",
+      data: node_hierarchy,
     });
   }
 );

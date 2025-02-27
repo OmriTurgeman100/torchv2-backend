@@ -5,6 +5,7 @@ import { CatchAsync } from "../utils/CatchAsync";
 import RulesEngine from "../utils/RulesEngine";
 import { expired_tree_evaluation } from "../utils/UpdateTreeTime";
 import { UpdateTreeTimeRecursion } from "../utils/ExpiredDataTree";
+import moment from "moment-timezone";
 
 export const post_nodes = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -515,9 +516,16 @@ export const report_graph = CatchAsync(
       [report_id]
     );
 
+    const israelTimeZone: string = "Asia/Jerusalem";
+
+    const convertedRows = report_time.rows.map((row) => ({
+      ...row,
+      time: moment.utc(row.time).tz(israelTimeZone).format("YYYY-MM-DD HH:mm"),
+    }));
+
     res.status(200).json({
       rows: report_time.rowCount,
-      time_series_data: report_time.rows,
+      time_series_data: convertedRows,
     });
   }
 );

@@ -52,6 +52,7 @@ router
 router
   .route("/comments/:id/:filter")
   .get(authController.authenticate_jwt_token, report_nodes_controller. display_node_comments)
-  .post(authController.authenticate_jwt_token, report_nodes_controller.insert_node_comments);
+  .post(authController.authenticate_jwt_token, report_nodes_controller.insert_node_comments)
+  .delete(authController.authenticate_jwt_token, report_nodes_controller.delete_comment);
 
 export default router;

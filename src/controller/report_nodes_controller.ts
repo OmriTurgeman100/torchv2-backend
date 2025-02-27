@@ -489,3 +489,18 @@ export const insert_node_comments = CatchAsync(
     res.status(200).json({ data: node_comments.rows });
   }
 );
+
+export const delete_comment = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const comment_id: string = req.params.id;
+
+    const deleted_comment = await pool.query(
+      "delete from node_comments where id = $1;",
+      [comment_id]
+    );
+
+    res.status(204).json({
+      message: deleted_comment.rows,
+    });
+  }
+);

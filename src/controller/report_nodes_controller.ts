@@ -573,6 +573,18 @@ export const path_hierarchy = CatchAsync(
       }
     }
 
+    let has_null_parent: boolean = false;
+    for (const node of node_hierarchy) {
+      if (node.parent === null) {
+        has_null_parent = true;
+        break;
+      }
+    }
+
+    if (has_null_parent === false) {
+      node_hierarchy[0].parent = null;
+    }
+
     res.status(200).json({
       data: node_hierarchy,
     });

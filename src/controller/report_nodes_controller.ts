@@ -541,7 +541,7 @@ export const path_hierarchy = CatchAsync(
         select nodes.node_id, nodes.parent, nodes.title, nodes.description, nodes.status, nodes.excluded, nodes.time 
         from nodes inner join node_hierarchy on nodes.parent = node_hierarchy.node_id
     ) 
-    select node_id as id, parent, title, status from node_hierarchy;
+    select node_id as id, parent, title, status, 'node' as type from node_hierarchy;
     `;
 
     const report_recursive_nodes_hierarchy_cte_query: string = `
@@ -549,7 +549,7 @@ export const path_hierarchy = CatchAsync(
       select distinct on (reports.report_id) reports.report_id, reports.title, reports.id, reports.value, reports.parent 
       FROM reports where parent = $1
     ) 
-    select id, parent, title, value as status from report_related_to_node;
+    select id, parent, title, value as status, 'report' as type from report_related_to_node;
   `;
 
     const nodes_hierarchy = await pool.query(

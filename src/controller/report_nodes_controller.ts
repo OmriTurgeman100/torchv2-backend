@@ -512,7 +512,7 @@ export const report_graph = CatchAsync(
     const filter: string = req.params.filter;
 
     const report_time = await pool.query(
-      `select value, time from reports where report_id = $1 and time >= now() - interval '${filter}' order by time desc;`,
+      `select value, time from reports where report_id = $1 and time >= now() - interval '${filter}' order by time asc;`,
       [report_id]
     );
 

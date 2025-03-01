@@ -62,4 +62,8 @@ router
   .route("/hierarchy/:id")
   .get(authController.authenticate_jwt_token, report_nodes_controller.path_hierarchy);
 
+router
+  .route("/path/:id")
+  .get(authController.authenticate_jwt_token, report_nodes_controller.display_active_path);
+
 export default router;

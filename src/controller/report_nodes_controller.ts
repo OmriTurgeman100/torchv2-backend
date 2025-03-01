@@ -590,3 +590,31 @@ export const path_hierarchy = CatchAsync(
     });
   }
 );
+
+export const display_active_path = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const node_id: string = req.params.id;
+
+    const recursive_active_node_path_query = `
+    with recursive node_hierarchy as (
+        select node_id, parent, title 
+        from nodes 
+        where node_id = $1
+        union all
+        select nodes.node_id, nodes.parent, nodes.title
+        from nodes 
+        inner join node_hierarchy on nodes.node_id = node_hierarchy.parent
+    ) 
+    select * from node_hierarchy;
+`;
+
+    const active_node_path = await pool.query(
+      recursive_active_node_path_query,
+      [node_id]
+    );
+
+    res.status(200).json({
+      data: active_node_path.rows,
+    });
+  }
+);

@@ -605,7 +605,7 @@ export const display_active_path = CatchAsync(
         from nodes 
         inner join node_hierarchy on nodes.node_id = node_hierarchy.parent
     ) 
-    select * from node_hierarchy;
+    select * from node_hierarchy order by node_id asc;
 `;
 
     const active_node_path = await pool.query(

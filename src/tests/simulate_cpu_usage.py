@@ -16,7 +16,7 @@ def insert_data(report_id, parent_id, title, description, value, excluded, times
 
 # Define parameters
 report_id = 'sample 1'
-parent_id = 1618
+parent_id = None
 title = 'sample 1'
 description = 'test description'
 excluded = False

@@ -597,11 +597,11 @@ export const display_active_path = CatchAsync(
 
     const recursive_active_node_path_query = `
     with recursive node_hierarchy as (
-        select node_id, parent, title 
+        select node_id, parent, title, status 
         from nodes 
         where node_id = $1
         union all
-        select nodes.node_id, nodes.parent, nodes.title
+        select nodes.node_id, nodes.parent, nodes.title, nodes.status
         from nodes 
         inner join node_hierarchy on nodes.node_id = node_hierarchy.parent
     ) 

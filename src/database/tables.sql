@@ -28,7 +28,7 @@ create table reports (
 	parent INTEGER REFERENCES nodes(node_id) ON DELETE CASCADE,
 	title VARCHAR(50) NOT NULL,
 	description VARCHAR(50) NOT NULL,
-	value INTEGER,
+	value NUMERIC,
 	excluded VARCHAR(50) DEFAULT 'false',
 	time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

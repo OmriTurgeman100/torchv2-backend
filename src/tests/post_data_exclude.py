@@ -18,13 +18,13 @@ def post_data_to_reports_exclude():
                         "report_id": report[0],
                         "title": report[0],
                         "description": f"{report[0]} description",
-                        "value": 80,
+                        "value": True,
                     }   
                     print(body)
 
                     response = requests.post("http://localhost:3000/api/v1/reports/nodes/BlackBox", json=(body), headers={'Content-Type': 'application/json', 'Authorization': f'Bearer {token}' })
 
-                    print(response.status_code)
+                    print(response.status_code, response.text)
 
                 time.sleep(2)
 

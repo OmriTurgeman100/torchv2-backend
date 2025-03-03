@@ -152,7 +152,13 @@ export const BlackBox_Scripts = CatchAsync(
 
     const description: string = req.body.description;
 
-    const value: number = req.body.value;
+    let value: number | boolean = req.body.value;
+
+    if (value === true) {
+      value = 1;
+    } else if (value === false) {
+      value = 0;
+    }
 
     const nodes_under_parent = await pool.query(
       "select * from nodes where parent = $1",

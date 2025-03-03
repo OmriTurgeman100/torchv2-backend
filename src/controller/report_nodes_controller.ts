@@ -466,7 +466,7 @@ export const delete_rule = CatchAsync(
 export const display_node_comments = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const node_id: string = req.params.id;
-    const filter: string = req.params.filter;
+    const filter: any = req.query.filter;
 
     const node_comments = await pool.query(
       `select * from node_comments where parent = $1 order by time ${filter}`,

@@ -13,12 +13,12 @@ def post_data_to_reports_exclude():
 
         while True:
             for report in distinct_reports:
-                if report[0] != 'sample 1111':
+                if report[0] != 'empty':
                     body = {
                         "report_id": report[0],
                         "title": report[0],
                         "description": f"{report[0]} description",
-                        "value": True,
+                        "value": 0.01,
                     }   
                     print(body)
 

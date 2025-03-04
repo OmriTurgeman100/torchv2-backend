@@ -67,4 +67,4 @@ for i in range(24 * 60 // 5):  # 1 day with 5-minute intervals
 cursor.close()
 conn.close()
 
-print("Data inserted successfully!")
+print("Data inserted successfully!!")

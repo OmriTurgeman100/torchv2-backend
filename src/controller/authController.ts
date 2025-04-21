@@ -13,7 +13,6 @@ interface auth_request extends Request {
 }
 
 export const register_users = CatchAsync(
-  // todo NUMBER 1
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const name = req.body.username;
 

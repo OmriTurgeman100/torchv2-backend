@@ -178,3 +178,69 @@ export const refresh_user_token = (
     }
   );
 };
+
+export const login_users_safe = CatchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const username: string = req.body.username;
+    const request_password: string = req.body.password;
+
+    const hashed_password: string =
+      "$2b$12$w0SnbYxPHzx9xDq3yMNKheLPeZ2L4zDP9rfw8X2K8lAlvyRXpBiAK";
+
+    const valid_user = await pool.query(
+      "select * from users where username = $1",
+      [username]
+    );
+
+    let user_password;
+    let user_name;
+    let user_id;
+    let user_role;
+
+    if (valid_user.rows.length === 0) {
+      user_password = hashed_password;
+    } else {
+      user_password = valid_user.rows[0].password;
+
+      user_name = valid_user.rows[0].username;
+
+      user_id = valid_user.rows[0].id;
+
+      user_role = valid_user.rows[0].role;
+    }
+
+    const valid_password = await bcrypt.compare(
+      request_password,
+      user_password
+    );
+
+    if (!valid_password || valid_user.rows.length === 0) {
+      return next(new AppError("username or password is incorrect", 401));
+    }
+
+    const user = { user_name, user_id, user_role };
+
+    const access_token = jwt.sign(
+      user,
+      process.env.JWT_SECRET_TOKEN as string,
+      {
+        expiresIn: "80d",
+      }
+    );
+
+    // const refresh_token = jwt.sign(
+    //   user,
+    //   process.env.JWT_REFRESH_TOKEN as string,
+    //   {
+    //     expiresIn: "80d",
+    //   }
+    // );
+
+    // res.cookie("refresh_token", refresh_token, { httpOnly: true });
+
+    res.status(200).json({
+      message: "login sucess",
+      token: access_token,
+    });
+  }
+);

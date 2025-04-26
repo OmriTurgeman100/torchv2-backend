@@ -228,16 +228,6 @@ export const login_users_safe = CatchAsync(
       }
     );
 
-    // const refresh_token = jwt.sign(
-    //   user,
-    //   process.env.JWT_REFRESH_TOKEN as string,
-    //   {
-    //     expiresIn: "80d",
-    //   }
-    // );
-
-    // res.cookie("refresh_token", refresh_token, { httpOnly: true });
-
     res.status(200).json({
       message: "login sucess",
       token: access_token,

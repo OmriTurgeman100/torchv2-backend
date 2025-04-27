@@ -12,7 +12,7 @@ router
 
 router
 .route("/login")
-.post(authController.login_users);
+.post(authController.login_users_safer);
 
 export default router;
 

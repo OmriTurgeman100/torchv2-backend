@@ -37,14 +37,26 @@ export const post_nodes = CatchAsync(
   }
 );
 
+interface RootNode {
+  node_id: number;
+  parent: null;
+  title: string;
+  description: string;
+  status: string;
+  excluded: string;
+  time: Date;
+}
+
 export const get_root_nodes = CatchAsync(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const root_nodes = await pool.query(
+    const root_nodes = await pool.query<RootNode>(
       "select * from nodes where parent is null;"
     );
 
+    const root_nodes_data = root_nodes.rows;
+
     res.status(200).json({
-      data: root_nodes.rows,
+      data: root_nodes_data,
     });
   }
 );

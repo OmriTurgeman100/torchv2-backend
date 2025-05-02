@@ -53,7 +53,7 @@ export const get_root_nodes = CatchAsync(
       "select * from nodes where parent is null;"
     );
 
-    const root_nodes_data = root_nodes.rows;
+    const root_nodes_data: RootNode[] = root_nodes.rows;
 
     res.status(200).json({
       data: root_nodes_data,
